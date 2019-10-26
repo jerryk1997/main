@@ -23,6 +23,7 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
+    private final String profilePicture;
     private final String address;
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
     private final List<String> projects = new ArrayList<>();
@@ -32,11 +33,13 @@ class JsonAdaptedPerson {
      */
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-                             @JsonProperty("email") String email, @JsonProperty("address") String address,
-                             @JsonProperty("tagged") List<JsonAdaptedTag> tagged, @JsonProperty("projects") List<String> projects) {
+                             @JsonProperty("email") String email, @JsonProperty("profilePicture") String profilePicture,
+                             @JsonProperty("address") String address, @JsonProperty("tagged") List<JsonAdaptedTag> tagged,
+                             @JsonProperty("projects") List<String> projects) {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.profilePicture = profilePicture;
         this.address = address;
         if (tagged != null) {
             this.tagged.addAll(tagged);
@@ -53,6 +56,7 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
+        profilePicture = source.getProfilePicture().value;
         address = source.getAddress().value;
         tagged.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
@@ -91,10 +95,16 @@ class JsonAdaptedPerson {
         if (email == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
+
         if (!Email.isValidEmail(email)) {
             throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
         }
         final Email modelEmail = new Email(email);
+
+        if (!ProfilePicture.isValidFilePath(profilePicture)) {
+            throw new IllegalValueException(ProfilePicture.MESSAGE_CONSTRAINTS);
+        }
+        final ProfilePicture modelProfilePicture = new ProfilePicture(profilePicture);
 
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
@@ -109,7 +119,7 @@ class JsonAdaptedPerson {
         final List<String> modelProjectList = new ArrayList<>();
         modelProjectList.addAll(projects);
 
-        Person person = new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags);
+        Person person = new Person(modelName, modelPhone, modelEmail, modelProfilePicture, modelAddress, modelTags);
         person.getProjects().addAll(modelProjectList);
         return person;
     }
