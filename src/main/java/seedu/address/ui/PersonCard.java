@@ -70,7 +70,7 @@ public class PersonCard extends UiPart<Region> {
             Image img = new Image(new FileInputStream(imgFile));
             profilePicture.setImage(img);
         } catch (FileNotFoundException e) {
-
+            e.getMessage();
         }
 
         id.setText(displayedIndex + ". ");

@@ -65,7 +65,7 @@ public class LogicManager implements Logic {
                 index++;
             }
         }
-        String commandText ="addProfilePicture " + index + " f/" + imgFile.getPath();
+        String commandText = "addProfilePicture " + index + " f/" + imgFile.getPath();
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
