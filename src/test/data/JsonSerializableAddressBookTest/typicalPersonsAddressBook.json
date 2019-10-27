@@ -32,6 +32,7 @@
     "name" : "Elle Meyer",
     "phone" : "9482224",
     "email" : "werner@example.com",
+    "profilePicture" : "data/empty_profile_picture.png",
     "address" : "michegan ave",
     "tagged" : [ ]
   }, {
