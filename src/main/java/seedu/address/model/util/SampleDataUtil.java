@@ -22,7 +22,7 @@ public class SampleDataUtil {
 
     public static Person[] getSamplePersons() {
 
-        ProfilePicture profilePicture = new ProfilePicture("/Users/jerry/AB3/src/main/resources/images/empty_profile_picture.png");
+        ProfilePicture profilePicture = new ProfilePicture("data/empty_profile_picture.png");
 
         return new Person[] {
             new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"), profilePicture,
