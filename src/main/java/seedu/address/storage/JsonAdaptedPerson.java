@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.timetable.TimeRange;
+import seedu.address.model.timetable.TimeTable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ class JsonAdaptedPerson {
     private final String address;
     private final List<JsonAdaptedTag> tagged = new ArrayList<>();
     private final List<String> projects = new ArrayList<>();
+    private final List<JsonAdaptedTimeRange> timetable = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -35,7 +38,8 @@ class JsonAdaptedPerson {
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
                              @JsonProperty("email") String email, @JsonProperty("profilePicture") String profilePicture,
                              @JsonProperty("address") String address, @JsonProperty("tagged") List<JsonAdaptedTag> tagged,
-                             @JsonProperty("projects") List<String> projects) {
+                             @JsonProperty("projects") List<String> projects, @JsonProperty("timetable") List<JsonAdaptedTimeRange> timetable) {
+
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -46,6 +50,9 @@ class JsonAdaptedPerson {
         }
         if (projects != null) {
             this.projects.addAll(projects);
+        }
+        if (timetable != null) {
+            this.timetable.addAll(timetable);
         }
     }
 
@@ -62,7 +69,11 @@ class JsonAdaptedPerson {
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
         projects.addAll(source.getProjects());
-
+        if (source.getTimeTable() != null) {
+            timetable.addAll(source.getTimeTable().getTimeRanges().stream()
+                    .map(JsonAdaptedTimeRange::new)
+                    .collect(Collectors.toList()));
+        }
     }
 
     /**
@@ -118,8 +129,18 @@ class JsonAdaptedPerson {
 
         final List<String> modelProjectList = new ArrayList<>();
         modelProjectList.addAll(projects);
+        List<TimeRange> timeRanges = new ArrayList<>();
+        timetable.forEach(x -> {
+            try {
+                timeRanges.add(x.toModelType());
+            } catch (IllegalValueException e) {
+                e.printStackTrace();
+            }
+        });
+        final TimeTable timeTable = new TimeTable(timeRanges);
 
-        Person person = new Person(modelName, modelPhone, modelEmail, modelProfilePicture, modelAddress, modelTags);
+        Person person = new Person(modelName, modelPhone, modelEmail, modelProfilePicture, modelAddress, modelTags, timeTable);
+
         person.getProjects().addAll(modelProjectList);
         return person;
     }

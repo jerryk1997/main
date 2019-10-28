@@ -8,6 +8,8 @@ import seedu.address.model.person.Person;
 import seedu.address.model.project.Project;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -79,6 +81,21 @@ public class ModelManager implements Model {
 
     public String checkoutConstrain() {
         return "Please checkout to a project before proceeding";
+    }
+
+    @Override
+    public List<Person> getMembers() {
+        List<Person> members = new ArrayList<>();
+        if (getWorkingProject().isEmpty()) {
+            return members;
+        }
+        Project workingProject = getWorkingProject().get();
+        addressBook.getPersonList().forEach(person -> {
+            if (workingProject.hasMember(person)) {
+                members.add(person);
+            }
+        });
+        return members;
     }
     //=========== UserPrefs ==================================================================================
 
@@ -223,6 +240,31 @@ public class ModelManager implements Model {
         updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
     }
 
+    //=========== Email Account for Owner of application ======================================================
+
+    private OwnerAccount ownerAccount;
+    private boolean isSignedIn = false;
+
+    public void signIn(OwnerAccount ownerAccount) throws Exception {
+        String account = ownerAccount.getEmail().value;
+        String pass = ownerAccount.getPassword();
+        Mailer.sendEmail(account, pass, "cs2103t17@gmail.com", "SignInCheck", "Email Exists and can sign in");
+        this.ownerAccount = ownerAccount;
+        this.isSignedIn = true;
+    }
+
+    public boolean isSignedIn() {
+        return this.isSignedIn;
+    }
+
+    public OwnerAccount getOwnerAccount() {
+        return this.ownerAccount;
+    }
+
+    public void logOut() {
+        this.ownerAccount = null;
+        this.isSignedIn = false;
+    }
 
     //=========== Filtered Project List Accessors =============================================================
 
