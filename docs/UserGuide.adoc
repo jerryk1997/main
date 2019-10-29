@@ -287,12 +287,6 @@ All commands in this section follow this set of index/order pairing, where appli
 . Whether tasks are done and then by increasing order of time.
 ****
 
-. *Sort*
-
-All sort methods follow this set of index/order pairing. Some indexes are specific to
-certain methods(such as 3 and 4 are specific to sortTask). Refer to each individual method
-to find out which indexes are available.
-
 ==== 1. Sort tasks: `sortTask`
 
 Sorts the tasks in the task list of the current working project based on given specification. +
