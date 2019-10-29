@@ -120,7 +120,7 @@ Example:
 * `addTimetable 3 f//home/john/Desktop/aliceTimetable.txt addTimetable 2
 n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27 __`
 
-==== 5. Add a task to your project: `addTask` [Checkout]
+==== 5. Add a task: `addTask` [Checkout]
 
 Adds an unchecked task to the list of tasks of your current working project. +
 Format: `addTask s/DESCRIPTION c/TIME`
