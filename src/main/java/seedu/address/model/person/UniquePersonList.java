@@ -4,9 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Task;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
@@ -95,6 +99,81 @@ public class UniquePersonList implements Iterable<Person> {
         }
 
         internalList.setAll(persons);
+    }
+
+    public void editTaskInAllPersons(Task task, Task editedTask) {
+        requireNonNull(task);
+        List<Person> personsToEdit = new ArrayList<>();
+        List<Person> editedPersons = new ArrayList<>();
+
+        for (Person person : internalList) {
+            List<Task> tasksAssigned = person.getPerformance().getTasksAssigned();
+            if (tasksAssigned.contains(task)) {
+                personsToEdit.add(person);
+                person.getPerformance().setTask(task, editedTask);
+                Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
+                        person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
+                editedPerson.getProjects().addAll(person.getProjects());
+                editedPersons.add(editedPerson);
+            }
+        }
+
+        ListIterator<Person> toEditIter = personsToEdit.listIterator();
+        ListIterator<Person> editedIter = editedPersons.listIterator();
+
+        while(toEditIter.hasNext() && editedIter.hasNext()) {
+            setPerson(toEditIter.next(), editedIter.next());
+        }
+    }
+
+    public void deleteTaskInAllPersons(Task task) {
+        requireNonNull(task);
+        List<Person> personsToEdit = new ArrayList<>();
+        List<Person> editedPersons = new ArrayList<>();
+
+        for (Person person : internalList) {
+            List<Task> tasksAssigned = person.getPerformance().getTasksAssigned();
+            if (tasksAssigned.contains(task)) {
+                personsToEdit.add(person);
+                person.getPerformance().deleteTask(task);
+                Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
+                        person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
+                editedPerson.getProjects().addAll(person.getProjects());
+                editedPersons.add(editedPerson);
+            }
+        }
+
+        ListIterator<Person> toEditIter = personsToEdit.listIterator();
+        ListIterator<Person> editedIter = editedPersons.listIterator();
+
+        while(toEditIter.hasNext() && editedIter.hasNext()) {
+            setPerson(toEditIter.next(), editedIter.next());
+        }
+    }
+
+    public void deleteMeetingInAllPersons(Meeting meeting) {
+        requireNonNull(meeting);
+        List<Person> personsToEdit = new ArrayList<>();
+        List<Person> editedPersons = new ArrayList<>();
+
+        for (Person person : internalList) {
+            List<Meeting> meetingsAttended = person.getPerformance().getMeetingsAttended();
+            if (meetingsAttended.contains(meeting)) {
+                personsToEdit.add(person);
+                person.getPerformance().deleteMeeting(meeting);
+                Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
+                        person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
+                editedPerson.getProjects().addAll(person.getProjects());
+                editedPersons.add(editedPerson);
+            }
+        }
+
+        ListIterator<Person> toEditIter = personsToEdit.listIterator();
+        ListIterator<Person> editedIter = editedPersons.listIterator();
+
+        while(toEditIter.hasNext() && editedIter.hasNext()) {
+            setPerson(toEditIter.next(), editedIter.next());
+        }
     }
 
     /**

@@ -5,7 +5,9 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
+import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
+import seedu.address.model.project.Task;
 import seedu.address.model.util.SortingOrder;
 
 import java.nio.file.Path;
@@ -171,6 +173,23 @@ public class ModelManager implements Model {
 
         addressBook.setPerson(target, editedPerson);
     }
+
+    @Override
+    public void editTaskInAllPersons(Task task, Task editedTask) {
+        addressBook.editTaskInAllPersons(task, editedTask);
+    }
+
+    @Override
+    public void deleteTaskInAllPersons(Task task) {
+        addressBook.deleteTaskInAllPersons(task);
+    }
+
+    @Override
+    public void deleteMeetingInAllPersons(Meeting meeting) {
+        addressBook.deleteMeetingInAllPersons(meeting);
+    }
+
+
 
     //=========== Filtered Person List Accessors =============================================================
 

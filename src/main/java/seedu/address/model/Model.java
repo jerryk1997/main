@@ -3,7 +3,9 @@ package seedu.address.model;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Person;
+import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
+import seedu.address.model.project.Task;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -105,6 +107,12 @@ public interface Model {
      * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
      */
     void setPerson(Person target, Person editedPerson);
+
+    void editTaskInAllPersons(Task taskToEdit, Task editedTask);
+
+    void deleteTaskInAllPersons(Task task);
+
+    void deleteMeetingInAllPersons(Meeting meeting);
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();

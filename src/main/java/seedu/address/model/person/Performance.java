@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import seedu.address.model.person.exceptions.MeetingNotFoundException;
+import seedu.address.model.person.exceptions.TaskNotFoundException;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Task;
 
@@ -36,12 +38,28 @@ public class Performance {
         return meetingsAttended.size();
     }
 
-    public void removeMeeting(Meeting meeting) {
-        meetingsAttended.remove(meetingsAttended.indexOf(meeting));
+    public void setTask(Task taskToEdit, Task editedTask) {
+        if (!tasksAssigned.contains(taskToEdit)) {
+            throw new TaskNotFoundException();
+        }
+
+        tasksAssigned.set(tasksAssigned.indexOf(taskToEdit), editedTask);
     }
 
-    public void removeTask(Task task) {
-        tasksAssigned.remove(tasksAssigned.indexOf(task));
+    public void deleteTask(Task task) {
+        if (!tasksAssigned.contains(task)) {
+            throw new TaskNotFoundException();
+        }
+
+        tasksAssigned.remove(task);
+    }
+
+    public void deleteMeeting(Meeting meeting) {
+        if (!meetingsAttended.contains(meeting)) {
+            throw new MeetingNotFoundException();
+        }
+
+        meetingsAttended.remove(meeting);
     }
 
     @Override
