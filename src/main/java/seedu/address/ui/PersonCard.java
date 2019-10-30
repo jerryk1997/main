@@ -98,14 +98,23 @@ public class PersonCard extends UiPart<Region> {
                 .forEach(project -> projects.getChildren().add(new Label(project)));
         projectHeader.setText("Projects:");
         projects.setOrientation(Orientation.VERTICAL);
+        projects.setPrefWrapLength(100);
 
+        setTasks();
+        setMeetings();
+    }
+
+    private void setTasks() {
         int taskCount = 0;
         taskHeader.setText("Tasks assigned: ");
         for (Task task : person.getPerformance().getTasksAssigned()) {
             tasksAssigned.getChildren().add(new Label("    " + ++taskCount + ". " + task.toString()));
         }
+        tasksAssigned.setOrientation(Orientation.VERTICAL);
+        tasksAssigned.setPrefWrapLength(100);
+    }
 
-
+    private void setMeetings() {
         int meetingCount = 0;
         meetingHeader.setText("Meetings attended:");
         List<Meeting> sortedMeetings = person.getPerformance().getMeetingsAttended().stream()
@@ -114,6 +123,8 @@ public class PersonCard extends UiPart<Region> {
         for (Meeting meeting : sortedMeetings) {
             meetingsAttended.getChildren().add(new Label("    " + ++meetingCount + ". " + meeting.getDescription().toString() + " on " + meeting.getTime().toString()));
         }
+        meetingsAttended.setOrientation(Orientation.VERTICAL);
+        meetingsAttended.setPrefWrapLength(100);
     }
 
     @FXML
