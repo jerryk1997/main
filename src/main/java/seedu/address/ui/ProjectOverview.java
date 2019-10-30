@@ -18,6 +18,7 @@ import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,11 +91,7 @@ public class ProjectOverview extends UiPart<Region> {
         tasks.setPrefWrapLength(100);
 
         meetingTitle.setText("Meetings: ");
-        List<Meeting> sortedMeetings = project.getListOfMeeting().stream()
-                .sorted(Comparator.comparing(m -> m.getTime().getDate())).collect(Collectors.toList());
-        for (Meeting meeting : sortedMeetings) {
-            meetings.getChildren().add(new Label("    " + ++meetingCount + ". " + meeting.getDescription().toString() + " on " + meeting.getTime().toString()));
-        }
+        displayMeeting(meetings, this.project);
 
         //Defining the x axis
         CategoryAxis xAxis = new CategoryAxis();
@@ -126,6 +123,15 @@ public class ProjectOverview extends UiPart<Region> {
 
         //Add the chart to the HBox
         wrapper.getChildren().add(stackedBarChart);
+    }
+
+    public void displayMeeting(FlowPane meetings, Project project) {
+        List<Meeting> listOfMeetings = new ArrayList<Meeting>(project.getListOfMeeting());
+        int meetingCount = 1;
+        listOfMeetings.sort(Comparator.comparing(m -> m.getTime().getDate()));
+        for (Meeting meeting: listOfMeetings) {
+            meetings.getChildren().add(new Label("    " + meetingCount++ + ". " + meeting.getDescription().description + " on " + meeting.getTime().time));
+        }
     }
 
     @Override

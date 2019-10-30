@@ -86,6 +86,8 @@ public class AssignTaskCommand extends Command {
                     personToAssign.getProfilePicture(), personToAssign.getAddress(),
                     personToAssign.getTags(), personToAssign.getTimeTable(), updatedPerformance);
 
+            editedPerson.getProjects().addAll(personToAssign.getProjects());
+
             assignedPersons.add(editedPerson);
         }
 

@@ -18,10 +18,13 @@
                 </minWidth>
             </Label>
         </HBox>
-        <Label fx:id="description" styleClass="cell_small_label" text="\$description">
-         <padding>
-            <Insets bottom="10.0" />
-         </padding></Label>
+        <Label fx:id="description" styleClass="cell_small_label" text="\$description"/>
+        <Label fx:id="meetingTitle" styleClass="cell_big_label" text="\$meetingTitle">
+            <padding>
+                <Insets top="5.0"/>
+            </padding>
+        </Label>
+        <FlowPane fx:id="meetings" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="vertical" prefWrapLength="55" />
         <Label fx:id="memberTitle" styleClass="cell_big_label" text="\$memberTitle">
             <padding>
                 <Insets top="5.0" />
@@ -30,11 +33,9 @@
         <FlowPane fx:id="members" />
         <Label fx:id="taskTitle" styleClass="cell_big_label" text="\$taskTitle" />
         <FlowPane fx:id="tasks" />
-        <Label fx:id="meetingTitle" styleClass="cell_big_label" text="\$meetingTitle" />
-        <FlowPane fx:id="meetings">
          <padding>
             <Insets bottom="15.0" />
-         </padding></FlowPane>
+         </padding>
         <HBox>
             <Label styleClass="cell_big_label" text="Finance" />
             <VBox id="bar-chart" fx:id="wrapper" VBox.vgrow="ALWAYS">

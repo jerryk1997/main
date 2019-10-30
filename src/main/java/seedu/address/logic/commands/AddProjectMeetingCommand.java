@@ -26,14 +26,14 @@ public class AddProjectMeetingCommand extends Command {
             + PREFIX_TIME + "DD/MM/YYYY HHMM "
             + PREFIX_DESCRIPTION + "DESCRIPTION \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_TIME + "29/09/2019 1900"
+            + PREFIX_TIME + "29/09/2019 1900 "
             + PREFIX_DESCRIPTION + "milestone discussion";
 
     public static final String MESSAGE_DUPLICATE_PROJECT = "Project list contains duplicate project(s).";
 
     private final Meeting toAdd;
 
-    /*
+    /**
     Constructor
      */
     public AddProjectMeetingCommand(Meeting meeting) {
@@ -60,6 +60,7 @@ public class AddProjectMeetingCommand extends Command {
         editedProject.setListOfMeeting(newMeetingList);
 
         model.setProject(projectToEdit, editedProject);
+        model.setWorkingProject(editedProject);
         model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
         return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), COMMAND_WORD);
     }
