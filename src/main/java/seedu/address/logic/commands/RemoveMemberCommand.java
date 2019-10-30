@@ -39,6 +39,7 @@ public class RemoveMemberCommand extends Command {
         //Finding the person and removing the project from the person's list of projects
         model.updateFilteredPersonList(predicate);
         Person targetPerson = model.getFilteredPersonList().get(0);
+        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
         List<String> memberProjectList = targetPerson.getProjects();
         memberProjectList.remove(
                 memberProjectList.indexOf(

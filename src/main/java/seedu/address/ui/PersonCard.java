@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,12 +14,15 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Person;
+import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Task;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -58,6 +62,14 @@ public class PersonCard extends UiPart<Region> {
     private Label projectHeader;
     @FXML
     private FlowPane projects;
+    @FXML
+    private Label taskHeader;
+    @FXML
+    private FlowPane tasksAssigned;
+    @FXML
+    private Label meetingHeader;
+    @FXML
+    private FlowPane meetingsAttended;
 
     public PersonCard(Person person, int displayedIndex, Logic logic) {
         super(FXML);
@@ -81,9 +93,27 @@ public class PersonCard extends UiPart<Region> {
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+
         person.getProjects().stream()
                 .forEach(project -> projects.getChildren().add(new Label(project)));
         projectHeader.setText("Projects:");
+        projects.setOrientation(Orientation.VERTICAL);
+
+        int taskCount = 0;
+        taskHeader.setText("Tasks assigned: ");
+        for (Task task : person.getPerformance().getTasksAssigned()) {
+            tasksAssigned.getChildren().add(new Label("    " + ++taskCount + ". " + task.toString()));
+        }
+
+
+        int meetingCount = 0;
+        meetingHeader.setText("Meetings attended:");
+        List<Meeting> sortedMeetings = person.getPerformance().getMeetingsAttended().stream()
+                .sorted(Comparator.comparing(m -> m.getTime().getDate())).collect(Collectors.toList());
+
+        for (Meeting meeting : sortedMeetings) {
+            meetingsAttended.getChildren().add(new Label("    " + ++meetingCount + ". " + meeting.getDescription().toString() + " on " + meeting.getTime().toString()));
+        }
     }
 
     @FXML

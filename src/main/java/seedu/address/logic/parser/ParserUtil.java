@@ -1,15 +1,5 @@
 package seedu.address.logic.parser;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
-import java.math.BigDecimal;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.*;
-
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
@@ -25,12 +15,17 @@ import seedu.address.model.project.Time;
 import seedu.address.model.project.Title;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeRange;
-
-import java.util.List;
-import java.util.Date;
-import java.util.ArrayList;
 import seedu.address.model.timetable.TimeTable;
 
+import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.model.finance.Spending.DATE_FORMAT;
 
 /**
@@ -39,6 +34,7 @@ import static seedu.address.model.finance.Spending.DATE_FORMAT;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_MULTIPLE_INDEX = "Index is not a non-zero unsigned integer at position: ";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -51,6 +47,22 @@ public class ParserUtil {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
         return Index.fromOneBased(Integer.parseInt(trimmedIndex));
+    }
+
+    public static List<Index> parseMultipleIndex(String oneBasedIndexes) throws ParseException {
+        String[] oneBasedIndexesArr = oneBasedIndexes.trim().split("\\s+");
+        List<Index> oneBasedIndexList = new ArrayList<>();
+        int indexCount = 1;
+
+        for (String oneBasedIndex : oneBasedIndexesArr) {
+            if (!StringUtil.isNonZeroUnsignedInteger(oneBasedIndex)) {
+                throw new ParseException(MESSAGE_INVALID_MULTIPLE_INDEX + indexCount);
+            }
+            oneBasedIndexList.add(Index.fromOneBased(Integer.parseInt(oneBasedIndex)));
+            indexCount++;
+        }
+
+        return oneBasedIndexList;
     }
 
     /**

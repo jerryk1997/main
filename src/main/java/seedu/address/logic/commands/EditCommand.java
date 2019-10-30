@@ -93,8 +93,9 @@ public class EditCommand extends Command {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         TimeTable timeTable = personToEdit.getTimeTable(); // Timetable is not affected by edit command. Just copy.
+        Performance performance = personToEdit.getPerformance(); // Similar to timetable, performance is unaffected.
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedProfilePicture, updatedAddress, updatedTags, timeTable);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedProfilePicture, updatedAddress, updatedTags, timeTable, performance);
     }
 
     @Override

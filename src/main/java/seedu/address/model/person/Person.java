@@ -1,5 +1,7 @@
 package seedu.address.model.person;
 
+import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Task;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeTable;
 
@@ -24,11 +26,12 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final List<String> projects = new ArrayList<>();
     private final TimeTable timeTable;
+    private final Performance performance;
 
     /**
      * Every field must be present and not null, except for timeTable which can be null.
      */
-    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags, TimeTable timeTable) {
+    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags, TimeTable timeTable, Performance performance) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
@@ -37,13 +40,14 @@ public class Person {
         this.address = address;
         this.tags.addAll(tags);
         this.timeTable = timeTable;
+        this.performance = performance;
     }
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags) {
-        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()));
+        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()), new Performance(new ArrayList<Meeting>(), new ArrayList<Task>()));
     }
 
     public Name getName() {
@@ -80,6 +84,10 @@ public class Person {
 
     public TimeTable getTimeTable() {
         return timeTable;
+    }
+
+    public Performance getPerformance() {
+        return performance;
     }
 
     /**
@@ -119,7 +127,8 @@ public class Person {
                 && otherPerson.getAddress().equals(getAddress())
                 && otherPerson.getTags().equals(getTags())
                 && ((this.getTimeTable() == null && otherPerson.getTimeTable() == null)
-                    || otherPerson.getTimeTable().equals(getTimeTable()));
+                    || otherPerson.getTimeTable().equals(getTimeTable()))
+                && otherPerson.getPerformance().equals(getPerformance());
     }
 
     @Override
