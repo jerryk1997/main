@@ -108,11 +108,13 @@ public interface Model {
      */
     void setPerson(Person target, Person editedPerson);
 
-    void editTaskInAllPersons(Task taskToEdit, Task editedTask);
+    void editTaskInAllPersons(Task taskToEdit, Task editedTask, Project currWorkingProject);
 
-    void deleteTaskInAllPersons(Task task);
+    void deleteTaskInAllPersons(Task task, Project currWorkingProject);
 
-    void deleteMeetingInAllPersons(Meeting meeting);
+    void deleteMeetingInAllPersons(Meeting meeting, Project currWorkingProject);
+
+    List<Person> getMembersOf(Project project);
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();
@@ -193,6 +195,8 @@ public interface Model {
      * The member must exist in at least one project.
      */
     void deleteMember(String name);
+
+    void editInAllProjects(Person personToEdit, Person editedPerson);
 
     //=========== Filtered Project List Accessors =============================================================
 

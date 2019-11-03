@@ -6,10 +6,12 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Performance;
 import seedu.address.model.person.Person;
+import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -36,7 +38,8 @@ public class AssignTaskCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Task> taskList = model.getWorkingProject().get().getTasks();
+        Project currWorkingProject = model.getWorkingProject().get();
+        List<Task> taskList = currWorkingProject.getTasks();
         List<String> personNameList = model.getWorkingProject().get().getMemberNames();
         List<Person> personList = new ArrayList<>();
        
@@ -66,7 +69,7 @@ public class AssignTaskCommand extends Command {
             personsToAssign.add(personList.get(personIndex.getZeroBased()));
         }
 
-        List<Person> assignedPersons = assignTaskTo(personsToAssign, taskToAssign);
+        List<Person> assignedPersons = assignTaskTo(personsToAssign, taskToAssign, currWorkingProject);
         setPersons(personsToAssign, assignedPersons, model);
 
         return new CommandResult(String.format(MESSAGE_TASK_ASSIGNMENT_SUCCESS,
@@ -74,14 +77,24 @@ public class AssignTaskCommand extends Command {
                 getAsString(assignedPersons)), COMMAND_WORD);
     }
 
-    private List<Person> assignTaskTo(List<Person> personsToAssign, Task taskToAssign) {
+    private List<Person> assignTaskTo(List<Person> personsToAssign, Task taskToAssign, Project currWorkingProject) {
         List<Person> assignedPersons = new ArrayList<>();
+        String projectTitle = currWorkingProject.getTitle().title;
 
         for (Person personToAssign : personsToAssign) {
             Performance previousPerformance = personToAssign.getPerformance();
-            previousPerformance.getTasksAssigned().add(taskToAssign); // Add tha task to the list of tasks
+            HashMap<String, List<Task>> taskAssignment = previousPerformance.getTaskAssignment();
+            if (taskAssignment.containsKey(projectTitle)) {
+                taskAssignment.get(projectTitle).add(taskToAssign); // Add tha task to the list of tasks
+            } else {
+                taskAssignment.put(projectTitle, new ArrayList<>());
+                taskAssignment.get(projectTitle).add(taskToAssign);
+            }
 
-            Performance updatedPerformance = new Performance(previousPerformance.getMeetingsAttended(), previousPerformance.getTasksAssigned());
+            HashMap<String, List<Task>> updatedTaskAssignment = previousPerformance.getTaskAssignment();
+
+            Performance updatedPerformance = previousPerformance.setTasksAssigned(updatedTaskAssignment);
+
             Person editedPerson = new Person(personToAssign.getName(), personToAssign.getPhone(), personToAssign.getEmail(),
                     personToAssign.getProfilePicture(), personToAssign.getAddress(),
                     personToAssign.getTags(), personToAssign.getTimeTable(), updatedPerformance);

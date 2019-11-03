@@ -76,7 +76,7 @@ public class EditTaskCommand extends Command {
 
         Task taskToEdit = taskList.remove(index.getZeroBased());
         Task editedTask = createEditedTask(taskToEdit, editTaskDescriptor);
-        model.editTaskInAllPersons(taskToEdit, editedTask);
+        model.editTaskInAllPersons(taskToEdit, editedTask, projectToEdit);
         taskList.add(index.getZeroBased(), editedTask);
         Collections.sort(taskList, SortingOrder.getCurrentSortingOrderForTask());
 

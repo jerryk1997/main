@@ -145,7 +145,7 @@ class JsonAdaptedPerson {
         if (performance != null) {
             modelPerformance = performance.toModelType();
         } else {
-            modelPerformance = new Performance(new ArrayList<>(), new ArrayList<>());
+            modelPerformance = new Performance();
         }
 
         Person person = new Person(modelName, modelPhone, modelEmail, modelProfilePicture, modelAddress, modelTags, timeTable, modelPerformance);

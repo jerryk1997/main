@@ -7,6 +7,7 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Performance;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Project;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,9 +36,12 @@ public class MarkAttendanceCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        Set<Meeting> meetingSet = model.getWorkingProject().get().getListOfMeeting();
+        Project currWorkingProject = model.getWorkingProject().get();
+        Set<Meeting> meetingSet = currWorkingProject.getListOfMeeting();
+        //Getting the list shown to the user so that the index input matches the position of the meeting
         List<Meeting> meetingListShown = meetingSet.stream()
                 .sorted(Comparator.comparing(m -> m.getTime().getDate())).collect(Collectors.toList());
+        //Finding the corresponding Persons in the contacts based on the names in the project
         List<String> personNameList = model.getWorkingProject().get().getMemberNames();
         List<Person> personList = new ArrayList<>();
         for (String personName : personNameList) {
@@ -66,7 +70,7 @@ public class MarkAttendanceCommand extends Command {
             personsToMark.add(personList.get(personIndex.getZeroBased()));
         }
 
-        List<Person> markedPersons = markAttendanceOf(personsToMark, meeting);
+        List<Person> markedPersons = markAttendanceOf(personsToMark, meeting, currWorkingProject);
         setPersons(personsToMark, markedPersons, model);
 
         return new CommandResult(String.format(MESSAGE_MARK_ATTENDANCE_SUCCESS,
@@ -75,14 +79,25 @@ public class MarkAttendanceCommand extends Command {
                 getAsString(markedPersons)), COMMAND_WORD);
     }
 
-    private List<Person> markAttendanceOf(List<Person> personsToMark, Meeting meeting) {
+    private List<Person> markAttendanceOf(List<Person> personsToMark, Meeting meeting, Project currWorkingProject) {
         List<Person> markedPersons = new ArrayList<>();
+        String projectTitle = currWorkingProject.getTitle().title;
 
         for (Person personToMark : personsToMark) {
             Performance previousPerformance = personToMark.getPerformance();
-            previousPerformance.getMeetingsAttended().add(meeting);
+            HashMap<String, List<Meeting>> meetingsAttended = previousPerformance.getMeetingsAttended();
 
-            Performance updatedPerformance = new Performance(previousPerformance.getMeetingsAttended(), previousPerformance.getTasksAssigned());
+            if (meetingsAttended.containsKey(projectTitle)) {
+                meetingsAttended.get(currWorkingProject.getTitle().title).add(meeting);
+            } else {
+                meetingsAttended.put(projectTitle, new ArrayList<>());
+                meetingsAttended.get(projectTitle).add(meeting);
+            }
+
+            HashMap<String, List<Meeting>> updatedMeetingsAttended = previousPerformance.getMeetingsAttended();
+
+            Performance updatedPerformance = previousPerformance.setMeetingsAttended(updatedMeetingsAttended);
+
             Person editedPerson = new Person(personToMark.getName(), personToMark.getPhone(), personToMark.getEmail(),
                     personToMark.getProfilePicture(), personToMark.getAddress(),
                     personToMark.getTags(), personToMark.getTimeTable(), updatedPerformance);

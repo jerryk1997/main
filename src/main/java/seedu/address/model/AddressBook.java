@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
 import java.util.List;
@@ -95,16 +96,20 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.remove(key);
     }
 
-    public void editTaskInAllPersons(Task task, Task editedTask) {
-        persons.editTaskInAllPersons(task, editedTask);
+    public void editTaskInAllPersons(Task task, Task editedTask, Project currWorkingProject) {
+        persons.editTaskInAllPersons(task, editedTask, currWorkingProject);
     }
 
-    public void deleteTaskInAllPersons(Task task) {
-        persons.deleteTaskInAllPersons(task);
+    public void deleteTaskInAllPersons(Task task, Project currWorkingProject) {
+        persons.deleteTaskInAllPersons(task, currWorkingProject);
     }
 
-    public void deleteMeetingInAllPersons(Meeting meeting) {
-        persons.deleteMeetingInAllPersons(meeting);
+    public void deleteMeetingInAllPersons(Meeting meeting, Project currWorkingProject) {
+        persons.deleteMeetingInAllPersons(meeting, currWorkingProject);
+    }
+
+    public List<Person> getMembersOf(Project project) {
+        return persons.getMembersOf(project);
     }
 
     //// util methods

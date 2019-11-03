@@ -54,7 +54,7 @@ public class DeleteTaskCommand extends Command {
         ArrayList<Task> taskList = new ArrayList<>();
         taskList.addAll(taskToEdit);
         Task task = taskList.remove(index.getZeroBased());
-        model.deleteTaskInAllPersons(task);
+        model.deleteTaskInAllPersons(task, projectToEdit);
         Finance finance = projectToEdit.getFinance();
 
 

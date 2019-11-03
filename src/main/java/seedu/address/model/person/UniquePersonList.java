@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.project.Meeting;
+import seedu.address.model.project.Project;
 import seedu.address.model.project.Task;
 
 import java.util.ArrayList;
@@ -101,16 +102,22 @@ public class UniquePersonList implements Iterable<Person> {
         internalList.setAll(persons);
     }
 
-    public void editTaskInAllPersons(Task task, Task editedTask) {
+    public void editTaskInAllPersons(Task task, Task editedTask, Project currWorkingProject) {
         requireNonNull(task);
         List<Person> personsToEdit = new ArrayList<>();
         List<Person> editedPersons = new ArrayList<>();
+        String projectTitle = currWorkingProject.getTitle().title;
 
         for (Person person : internalList) {
-            List<Task> tasksAssigned = person.getPerformance().getTasksAssigned();
+
+            if (!person.getPerformance().getTaskAssignment().containsKey(projectTitle)) {
+                continue;
+            }
+
+            List<Task> tasksAssigned = person.getPerformance().getTaskAssignment().get(projectTitle);
             if (tasksAssigned.contains(task)) {
                 personsToEdit.add(person);
-                person.getPerformance().setTask(task, editedTask);
+                person.getPerformance().setTask(task, editedTask, projectTitle);
                 Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
                         person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
                 editedPerson.getProjects().addAll(person.getProjects());
@@ -126,16 +133,22 @@ public class UniquePersonList implements Iterable<Person> {
         }
     }
 
-    public void deleteTaskInAllPersons(Task task) {
+    public void deleteTaskInAllPersons(Task task, Project currWorkingProject) {
         requireNonNull(task);
         List<Person> personsToEdit = new ArrayList<>();
         List<Person> editedPersons = new ArrayList<>();
+        String projectTitle = currWorkingProject.getTitle().title;
 
         for (Person person : internalList) {
-            List<Task> tasksAssigned = person.getPerformance().getTasksAssigned();
+
+            if (!person.getPerformance().getTaskAssignment().containsKey(projectTitle)) {
+                continue;
+            }
+
+            List<Task> tasksAssigned = person.getPerformance().getTaskAssignment().get(projectTitle);
             if (tasksAssigned.contains(task)) {
                 personsToEdit.add(person);
-                person.getPerformance().deleteTask(task);
+                person.getPerformance().deleteTask(task, projectTitle);
                 Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
                         person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
                 editedPerson.getProjects().addAll(person.getProjects());
@@ -151,16 +164,22 @@ public class UniquePersonList implements Iterable<Person> {
         }
     }
 
-    public void deleteMeetingInAllPersons(Meeting meeting) {
+    public void deleteMeetingInAllPersons(Meeting meeting, Project currWorkingProject) {
         requireNonNull(meeting);
         List<Person> personsToEdit = new ArrayList<>();
         List<Person> editedPersons = new ArrayList<>();
+        String projectTitle = currWorkingProject.getTitle().title;
 
         for (Person person : internalList) {
-            List<Meeting> meetingsAttended = person.getPerformance().getMeetingsAttended();
+
+            if (!person.getPerformance().getMeetingsAttended().containsKey(projectTitle)) {
+                continue;
+            }
+
+            List<Meeting> meetingsAttended = person.getPerformance().getMeetingsAttended().get(projectTitle);
             if (meetingsAttended.contains(meeting)) {
                 personsToEdit.add(person);
-                person.getPerformance().deleteMeeting(meeting);
+                person.getPerformance().deleteMeeting(meeting, projectTitle);
                 Person editedPerson = new Person(person.getName(), person.getPhone(), person.getEmail(), person.getProfilePicture(),
                         person.getAddress(), person.getTags(), person.getTimeTable(), person.getPerformance());
                 editedPerson.getProjects().addAll(person.getProjects());
@@ -174,6 +193,20 @@ public class UniquePersonList implements Iterable<Person> {
         while(toEditIter.hasNext() && editedIter.hasNext()) {
             setPerson(toEditIter.next(), editedIter.next());
         }
+    }
+
+    public List<Person> getMembersOf(Project project) {
+        List<Person> memberList = new ArrayList<>();
+        List<String> memberNameList = project.getMemberNames();
+
+        for (Person person : internalList) {
+            String name = person.getName().fullName;
+            if (memberNameList.contains(name)) {
+                memberList.add(person);
+            }
+        }
+
+        return memberList;
     }
 
     /**

@@ -1,7 +1,5 @@
 package seedu.address.model.person;
 
-import seedu.address.model.project.Meeting;
-import seedu.address.model.project.Task;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeTable;
 
@@ -47,7 +45,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags) {
-        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()), new Performance(new ArrayList<Meeting>(), new ArrayList<Task>()));
+        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()), new Performance());
     }
 
     public Name getName() {

@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -96,6 +97,7 @@ public class PersonCard extends UiPart<Region> {
 
         person.getProjects().stream()
                 .forEach(project -> projects.getChildren().add(new Label(project)));
+        Logger.getGlobal().warning("isRun");
         projectHeader.setText("Projects:");
         projects.setOrientation(Orientation.VERTICAL);
         projects.setPrefWrapLength(100);
@@ -107,8 +109,16 @@ public class PersonCard extends UiPart<Region> {
     private void setTasks() {
         int taskCount = 0;
         taskHeader.setText("Tasks assigned: ");
-        for (Task task : person.getPerformance().getTasksAssigned()) {
-            tasksAssigned.getChildren().add(new Label("    " + ++taskCount + ". " + task.toString()));
+        for (String projectTitle : person.getProjects()) {
+
+            if (!person.getPerformance().getTaskAssignment().containsKey(projectTitle)) {
+                continue;
+            }
+
+            List<Task> taskList = person.getPerformance().getTaskAssignment().get(projectTitle);
+            for (Task task : taskList) {
+                tasksAssigned.getChildren().add(new Label("    " + ++taskCount + ". " + projectTitle + ": " + task.toString()));
+            }
         }
         tasksAssigned.setOrientation(Orientation.VERTICAL);
         tasksAssigned.setPrefWrapLength(100);
@@ -117,12 +127,23 @@ public class PersonCard extends UiPart<Region> {
     private void setMeetings() {
         int meetingCount = 0;
         meetingHeader.setText("Meetings attended:");
-        List<Meeting> sortedMeetings = person.getPerformance().getMeetingsAttended().stream()
-                .sorted(Comparator.comparing(m -> m.getTime().getDate())).collect(Collectors.toList());
+        for (String projectTitle : person.getProjects()) {
 
-        for (Meeting meeting : sortedMeetings) {
-            meetingsAttended.getChildren().add(new Label("    " + ++meetingCount + ". " + meeting.getDescription().toString() + " on " + meeting.getTime().toString()));
+            if (!person.getPerformance().getMeetingsAttended().containsKey(projectTitle)) {
+                continue;
+            }
+
+            List<Meeting> meetingList = person.getPerformance().getMeetingsAttended().get(projectTitle);
+            List<Meeting> sortedMeetings = meetingList.stream().sorted(Comparator.comparing(m -> m.getTime().getDate())).collect(Collectors.toList());
+
+            for (Meeting meeting : sortedMeetings) {
+                meetingsAttended.getChildren().add(new Label("    "
+                        + ++meetingCount + ". "
+                        + projectTitle + ": "
+                        + meeting.getDescription().toString() + " on " + meeting.getTime().toString()));
+            }
         }
+
         meetingsAttended.setOrientation(Orientation.VERTICAL);
         meetingsAttended.setPrefWrapLength(100);
     }

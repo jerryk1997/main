@@ -31,6 +31,7 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private final ProjectList projectList;
     private final FilteredList<Project> filteredProjects;
+    private final
 
     // this is the current branch
     private Optional<Project> workingProject = Optional.empty();
@@ -175,19 +176,25 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void editTaskInAllPersons(Task task, Task editedTask) {
-        addressBook.editTaskInAllPersons(task, editedTask);
+    public void editTaskInAllPersons(Task task, Task editedTask, Project currWorkingProject) {
+        addressBook.editTaskInAllPersons(task, editedTask, currWorkingProject);
     }
 
     @Override
-    public void deleteTaskInAllPersons(Task task) {
-        addressBook.deleteTaskInAllPersons(task);
+    public void deleteTaskInAllPersons(Task task, Project currWorkingProject) {
+        addressBook.deleteTaskInAllPersons(task, currWorkingProject);
     }
 
     @Override
-    public void deleteMeetingInAllPersons(Meeting meeting) {
-        addressBook.deleteMeetingInAllPersons(meeting);
+    public void deleteMeetingInAllPersons(Meeting meeting, Project currWorkingProject) {
+        addressBook.deleteMeetingInAllPersons(meeting, currWorkingProject);
     }
+
+    @Override
+    public List<Person> getMembersOf(Project project) {
+        return addressBook.getMembersOf(project);
+    }
+
 
 
 
@@ -262,6 +269,12 @@ public class ModelManager implements Model {
         projectList.deleteMember(name);
         updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
     }
+
+    @Override
+    public void editInAllProjects(Person personToEdit, Person editedPerson) {
+        projectList.editInAllProjects(personToEdit, editedPerson);
+    }
+
 
     //=========== Email Account for Owner of application ======================================================
 
