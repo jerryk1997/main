@@ -59,7 +59,7 @@ Format: `addProject n/PROJECT_TITLE s/PROJECT_DESCRIPTION`
 
 Example:
 
-* `addProject n/CS2103 project s/Software engeering project`
+* `addProject n/CS2103 project s/Software engineering project`
 
 ==== 2. Add a person: `add`
 
@@ -116,14 +116,21 @@ Example:
 
 ==== 4. Add a timetable: `addTimeTable`
 
+Adds a timetable for the specified person, to record down their schedule.
 
-Adds a timetable for the specified person, to record down their schedule. +
-Format : `addTimetable INDEX [n/NUSMODS_SHARE_URL] [f/FILEPATH_TO_TIMETABLE]`
+[TIP]
+Timetable added is later used to generate avaiable meeting timeslots using the command `generate`
+
+Format:
+
+`addTimetable INDEX [n/NUSMODS_SHARE_URL] [f/FILEPATH_TO_TIMETABLE]`
 
 Example:
 
-* `addTimetable 3 f//home/john/Desktop/aliceTimetable.txt addTimetable 2
-n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27 __`
+* `addTimetable 3 f//home/john/Desktop/aliceTimetable.txt` +
+Add Alice's timetable to Alice, who has index 3 in the list of persons.
+* `addTimetable 2 n/https://nusmods.com/timetable/sem-1/share?CS2100=LAB:05,TUT:02,LEC:1&CS2101=&CS2103T=LEC:G13&CS2105=TUT:03,LEC:1&CS3241=TUT:05,LEC:1&CS3243=TUT:01,LEC:1&GEQ1000=TUT:D27` +
+Add timetable to the person with index 2 on the list of persons.
 
 
 ==== 5. Add a task: `addTask` [Checkout]
@@ -140,6 +147,10 @@ Example:
 
 Adds a new project meeting to the current working project.  +
 Format: `Format: addProjectMeeting [c/ dd/MM/yyyy HHmm] [s/MEETING_DESCRIPTION]`
+
+Example:
+
+* `addProjectMeeting c/29/09/2019 1900 s/milestone discussion`
 
 === Editing
 
@@ -264,25 +275,21 @@ Returns any person having names `Betsy`, `Tim`, or `John`
 For every project, you can add meetings to it, and below you will be able to find more useful commands
 associated with this functionality.
 
-==== 1. Store meeting minutes: `attach`
+==== 1. Generate meeting timing: `generate` [Checkout]
 
-* Upload text file that contains the meeting minute for a specific meeting.
+Generates possible meeting timeslots for which everyone is available.
 
-* Format: `attach [mt/MEETING_INDEX] [dl/DEADLINE] [ta/TASKS] [t/TAG]…​`
+* Prerequisite: Timetables have been assigned to the members with the command `addTimetable`
 
-==== 2. Generate meeting timing: `generate` [Checkout]
-
-Generates a meeting time for which everyone is available.
-
-* Prerequisite: Timetables have been assigned to the members with the command addTimetable
-
-Format: `generate d/DURATION r/TIMERANGE
+Format: `generate d/DURATION [r/TIMERANGE]`
 
 Example:
 
-* `generate d/2 r/MONDAY 0900 MON`
+* `generate d/2 r/MONDAY 0900 MONDAY 1800` +
+Generates all possible meeting timeslots that lasts at least 2 hours, within the time frame of Monday 9am to Monday 6pm.
 
-==== 3. Send reminder: `sendReminder`
+
+==== 2. Send reminder: `sendReminder`
 
 Sends a reminder to all members of the current working project. +
 Format: `sendReminder`
@@ -291,8 +298,10 @@ Format: `sendReminder`
 Tired of switching between applications? We got you covered, below you will find some commands which support sending
 emails right here within the application.
 
-==== 1. Sign in to your account: `singIn`
-Sings in to the your email account. +
+Do keep in mind that only the user Account in our current version is only compatible with Gmail Account and please ensure that the Access to less secure app in the security setting is enabled before signing in! 
+
+==== 1. Sign in to your account: `signIn`
+Signs in to the your email account. +
 Format: `signIn [ac/ACCOUNT_EMAIL_ADDRESS] [pa/PASSWORD]`
 
 ==== 2. Log out from your account: `logOut`
@@ -317,9 +326,9 @@ All commands in this section follow this set of index/order pairing, where appli
 
 . Alphabetical order
 . Increasing order of time
-. Whether tasks are done.
-. Whether tasks are done and then by increasing order of time.
-. Increasing price.
+. Whether tasks are done
+. Whether tasks are done and then by increasing order of time
+. Increasing price
 ****
 
 ==== 1. Sort tasks: `sortTask`
