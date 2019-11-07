@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.performanceoverview.PerformanceOverview;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
@@ -64,6 +65,14 @@ public interface Model {
      * Get list of members in current checked out project.
      */
     List<Person> getMembers();
+
+    /**
+     * Sets the current Performance overview to the current working project's
+     * performance overview.
+     */
+    void setPerformanceOverview(PerformanceOverview overview);
+
+    PerformanceOverview getPerformanceOverview();
 
     //=========== AddressBook ================================================================================
     /**

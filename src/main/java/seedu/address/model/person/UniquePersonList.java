@@ -128,7 +128,7 @@ public class UniquePersonList implements Iterable<Person> {
         ListIterator<Person> toEditIter = personsToEdit.listIterator();
         ListIterator<Person> editedIter = editedPersons.listIterator();
 
-        while(toEditIter.hasNext() && editedIter.hasNext()) {
+        while (toEditIter.hasNext() && editedIter.hasNext()) {
             setPerson(toEditIter.next(), editedIter.next());
         }
     }
@@ -159,7 +159,7 @@ public class UniquePersonList implements Iterable<Person> {
         ListIterator<Person> toEditIter = personsToEdit.listIterator();
         ListIterator<Person> editedIter = editedPersons.listIterator();
 
-        while(toEditIter.hasNext() && editedIter.hasNext()) {
+        while (toEditIter.hasNext() && editedIter.hasNext()) {
             setPerson(toEditIter.next(), editedIter.next());
         }
     }
@@ -190,7 +190,7 @@ public class UniquePersonList implements Iterable<Person> {
         ListIterator<Person> toEditIter = personsToEdit.listIterator();
         ListIterator<Person> editedIter = editedPersons.listIterator();
 
-        while(toEditIter.hasNext() && editedIter.hasNext()) {
+        while (toEditIter.hasNext() && editedIter.hasNext()) {
             setPerson(toEditIter.next(), editedIter.next());
         }
     }

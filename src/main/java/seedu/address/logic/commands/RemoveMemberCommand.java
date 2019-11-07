@@ -26,7 +26,7 @@ public class RemoveMemberCommand extends Command {
 
     public static final String MESSAGE_REMOVE_MEMBER_SUCCESS = "Removed %1$s from %2$s";
 
-    Index targetIndex;
+    private Index targetIndex;
 
     public RemoveMemberCommand(Index targetIndex) {
         this.targetIndex = targetIndex;

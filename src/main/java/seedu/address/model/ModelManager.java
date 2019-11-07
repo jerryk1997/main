@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.performanceoverview.PerformanceOverview;
 import seedu.address.model.person.Person;
 import seedu.address.model.project.Meeting;
 import seedu.address.model.project.Project;
@@ -31,7 +32,7 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private final ProjectList projectList;
     private final FilteredList<Project> filteredProjects;
-    private final
+    private Optional<PerformanceOverview> performanceOverview;
 
     // this is the current branch
     private Optional<Project> workingProject = Optional.empty();
@@ -103,6 +104,16 @@ public class ModelManager implements Model {
             }
         });
         return members;
+    }
+
+    @Override
+    public void setPerformanceOverview(PerformanceOverview overview) {
+        this.performanceOverview = Optional.of(overview);
+    }
+
+    @Override
+    public PerformanceOverview getPerformanceOverview() {
+        return performanceOverview.get();
     }
     //=========== UserPrefs ==================================================================================
 

@@ -26,7 +26,7 @@ public abstract class Command {
         ListIterator<Person> toAssignIter = personsToAssign.listIterator();
         ListIterator<Person> assignedIter = assignedPersons.listIterator();
 
-        while(toAssignIter.hasNext() && assignedIter.hasNext()) {
+        while (toAssignIter.hasNext() && assignedIter.hasNext()) {
             Person personToAssign = toAssignIter.next();
             Person assignedPerson = assignedIter.next();
 

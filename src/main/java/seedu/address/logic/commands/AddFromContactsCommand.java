@@ -83,7 +83,7 @@ public class AddFromContactsCommand extends Command {
         return namesToAdd;
     }
 
-    private List<Person>  addProjToPersons(List<Person> personsToAdd, Project projectToAdd) {
+    private List<Person> addProjToPersons(List<Person> personsToAdd, Project projectToAdd) {
         List<Person> editedPersons = new ArrayList<>();
         for (Person person : personsToAdd) {
             List<String> projectList = person.getProjects();

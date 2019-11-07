@@ -49,8 +49,8 @@ public class MarkAttendanceCommand extends Command {
 
             //Filters the model person list one by one based on each name to find the relevant Person object
             // since project only keeps members as strings
-            personList.add(model.getFilteredPersonList().
-                    filtered(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords))).get(0));
+            personList.add(model.getFilteredPersonList()
+                    .filtered(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords))).get(0));
         }
 
         Index meetingIndex = targetIndexes.remove(0);

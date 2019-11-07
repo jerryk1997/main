@@ -96,8 +96,9 @@ public class ProjectOverview extends UiPart<Region> {
         //Defining the x axis
         CategoryAxis xAxis = new CategoryAxis();
 
-        xAxis.setCategories(FXCollections.observableArrayList(project.getFinance().getBudgetObservableList().stream().map(x -> x.getName()).collect(Collectors.toList())));
-        xAxis.setLabel("budgets");
+        xAxis.setCategories(FXCollections.observableArrayList(project.getFinance().getBudgetObservableList().stream()
+                .map(x -> x.getName()).collect(Collectors.toList())));
+        xAxis.setLabel("Budgets");
 
         //Defining the y axis
         NumberAxis yAxis = new NumberAxis();

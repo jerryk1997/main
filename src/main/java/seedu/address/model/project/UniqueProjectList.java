@@ -108,7 +108,7 @@ public class UniqueProjectList implements Iterable<Project> {
         for (Project project : internalList) {
             List<String> memberList = project.getMemberNames();
 
-            if(memberList.contains(personToEditName)) {
+            if (memberList.contains(personToEditName)) {
                 projectsToEdit.add(project);
                 memberList.set(memberList.indexOf(personToEditName), editedPersonName);
                 List<String> updatedMemberList = memberList;

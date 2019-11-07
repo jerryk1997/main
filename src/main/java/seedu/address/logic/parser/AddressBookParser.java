@@ -136,6 +136,9 @@ public class AddressBookParser {
         case DeleteProjectMeetingCommand.COMMAND_WORD:
             return new DeleteProjectMeetingCommandParser().parse(arguments);
 
+        case ShowPerformanceOverviewCommand.COMMAND_WORD:
+            return new ShowPerformanceOverviewCommand();
+
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
