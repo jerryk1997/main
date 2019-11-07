@@ -114,7 +114,7 @@ public class UniqueProjectList implements Iterable<Project> {
                 List<String> updatedMemberList = memberList;
 
                 Project updatedProject = new Project(project.getTitle(), project.getDescription(), updatedMemberList,
-                        project.getTasks(), project.getFinance());
+                        project.getTasks(), project.getFinance(), project.getGeneratedTimetable());
                 updatedProject.setListOfMeeting(project.getListOfMeeting());
                 editedProjects.add(updatedProject);
             }

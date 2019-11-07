@@ -7,7 +7,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.timetable.TimeRange;
-import seedu.address.model.timetable.TimeTable;
+import seedu.address.model.timetable.Timetable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -139,7 +139,7 @@ class JsonAdaptedPerson {
         for (JsonAdaptedTimeRange timeRange : timetable) {
             timeRanges.add(timeRange.toModelType());
         }
-        final TimeTable timeTable = new TimeTable(timeRanges);
+        final Timetable timeTable = new Timetable(timeRanges);
 
         final Performance modelPerformance;
         if (performance != null) {

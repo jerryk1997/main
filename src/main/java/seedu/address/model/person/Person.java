@@ -1,7 +1,7 @@
 package seedu.address.model.person;
 
 import seedu.address.model.tag.Tag;
-import seedu.address.model.timetable.TimeTable;
+import seedu.address.model.timetable.Timetable;
 
 import java.util.*;
 
@@ -23,13 +23,13 @@ public class Person {
     private final Address address;
     private final Set<Tag> tags = new HashSet<>();
     private final List<String> projects = new ArrayList<>();
-    private final TimeTable timeTable;
+    private final Timetable timeTable;
     private final Performance performance;
 
     /**
      * Every field must be present and not null, except for timeTable which can be null.
      */
-    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags, TimeTable timeTable, Performance performance) {
+    public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags, Timetable timeTable, Performance performance) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
@@ -45,7 +45,7 @@ public class Person {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, ProfilePicture profilePicture, Address address, Set<Tag> tags) {
-        this(name, phone, email, profilePicture, address, tags, new TimeTable(new ArrayList<>()), new Performance());
+        this(name, phone, email, profilePicture, address, tags, new Timetable(new ArrayList<>()), new Performance());
     }
 
     public Name getName() {
@@ -80,7 +80,7 @@ public class Person {
         return this.projects;
     }
 
-    public TimeTable getTimeTable() {
+    public Timetable getTimeTable() {
         return timeTable;
     }
 

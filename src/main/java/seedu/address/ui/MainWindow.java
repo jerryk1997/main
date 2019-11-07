@@ -45,6 +45,7 @@ public class MainWindow extends UiPart<Stage> {
     private PerformanceOverviewCard performanceOverviewCard;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private ShowTimetablePanel timetablePanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -63,6 +64,9 @@ public class MainWindow extends UiPart<Stage> {
 
     @FXML
     private StackPane budgetListPanelPlaceholder;
+
+    @FXML
+    private StackPane showTimetablePanelPlaceholder;
 
     @FXML
     private StackPane resultDisplayPlaceholder;
@@ -301,6 +305,11 @@ public class MainWindow extends UiPart<Stage> {
         case PERFORMANCE_OVERVIEW:
             performanceOverviewCard = new PerformanceOverviewCard(logic.getPerformanceOverview());
             projectListPanelPlaceholder.getChildren().setAll(performanceOverviewCard.getRoot());
+            break;
+
+        case SHOW_TIMETABLE:
+            timetablePanel = new ShowTimetablePanel(logic.getWorkingProject().get().getGeneratedTimetable());
+            projectListPanelPlaceholder.getChildren().setAll(timetablePanel.getRoot());
             currentState = nextState;
             break;
 
@@ -316,8 +325,6 @@ public class MainWindow extends UiPart<Stage> {
             state = State.PROJECT_LIST;
             break;
 
-        case GenerateSlotCommand.COMMAND_WORD:
-
         case CheckoutCommand.COMMAND_WORD:
             state = State.PROJECT_OVERVIEW;
             break;
@@ -332,6 +339,10 @@ public class MainWindow extends UiPart<Stage> {
 
         case ShowPerformanceOverviewCommand.COMMAND_WORD:
             state = State.PERFORMANCE_OVERVIEW;
+            break;
+
+        case GenerateSlotCommand.COMMAND_WORD:
+            state = State.SHOW_TIMETABLE;
             break;
 
         default:

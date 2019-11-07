@@ -58,7 +58,7 @@ public class AddFromContactsCommand extends Command {
 
         Project editedProject = new Project(projectToEdit.getTitle(),
                 projectToEdit.getDescription(), editedMemberList, projectToEdit.getTasks(),
-                new Finance(projectToEdit.getFinance().getBudgets()));
+                new Finance(projectToEdit.getFinance().getBudgets()), projectToEdit.getGeneratedTimetable());
 
         editedProject.getListOfMeeting().addAll(projectToEdit.getListOfMeeting());
         model.setProject(projectToEdit, editedProject);

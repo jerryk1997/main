@@ -7,7 +7,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.timetable.TimeTable;
+import seedu.address.model.timetable.Timetable;
 
 import java.util.Optional;
 import java.util.List;
@@ -101,7 +101,8 @@ public class EditCommand extends Command {
         ProfilePicture updatedProfilePicture = editPersonDescriptor.getProfilePicture().orElse(personToEdit.getProfilePicture());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-        TimeTable timeTable = personToEdit.getTimeTable(); // Timetable is not affected by edit command. Just copy.
+
+        Timetable timeTable = personToEdit.getTimeTable(); // Timetable is not affected by edit command. Just copy.
         Performance performance = personToEdit.getPerformance(); // Similar to timetable, performance is unaffected.
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedProfilePicture, updatedAddress, updatedTags, timeTable, performance);

@@ -127,6 +127,8 @@ public class ProjectOverview extends UiPart<Region> {
     }
 
     public void displayMeeting(FlowPane meetings, Project project) {
+        meetings.setOrientation(Orientation.VERTICAL);
+        meetings.setPrefWrapLength(100);
         List<Meeting> listOfMeetings = new ArrayList<Meeting>(project.getListOfMeeting());
         int meetingCount = 1;
         listOfMeetings.sort(Comparator.comparing(m -> m.getTime().getDate()));
