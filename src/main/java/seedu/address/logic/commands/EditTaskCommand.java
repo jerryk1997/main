@@ -76,11 +76,13 @@ public class EditTaskCommand extends Command {
 
         Task taskToEdit = taskList.remove(index.getZeroBased());
         Task editedTask = createEditedTask(taskToEdit, editTaskDescriptor);
+        model.editTaskInAllPersons(taskToEdit, editedTask, projectToEdit);
         taskList.add(index.getZeroBased(), editedTask);
         Collections.sort(taskList, SortingOrder.getCurrentSortingOrderForTask());
 
-        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), projectToEdit.getMemberNames(), taskList, projectToEdit.getFinance());
-        editedProject.getListOfMeeting().addAll(projectToEdit.getListOfMeeting());
+
+        Project editedProject = new Project(projectToEdit.getTitle(), projectToEdit.getDescription(), projectToEdit.getMemberNames(), taskList, projectToEdit.getFinance(), projectToEdit.getGeneratedTimetable());
+        editedProject.setListOfMeeting(projectToEdit.getListOfMeeting());
 
         model.setProject(projectToEdit, editedProject);
         model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
