@@ -47,8 +47,23 @@ class JsonAdaptedMeeting {
      * @throws IllegalValueException if there were any data constraints violated in the adapted tag.
      */
     public Meeting toModelType() throws IllegalValueException, ParseException {
-        if ((!Time.isValidTime(time)) || (!Description.isValidDescription(description))) {
-            throw new IllegalValueException(Time.MESSAGE_CONSTRAINTS + " " + Description.MESSAGE_CONSTRAINTS);
+        String t = time.trim().split(" ")[1];
+        String d = time.trim().split(" ")[0];
+        boolean checkLength = time.trim().split(" ").length < 2;
+        if (checkLength || time == null || time.equals("")) {
+            throw new IllegalValueException(Time.MESSAGE_CONSTRAINTS);
+        }
+        if (!Time.isValidTimeAndDate(time.trim())) {
+            throw new IllegalValueException(Time.MESSAGE_CONSTRAINTS);
+        }
+        if (!Time.isValidDate(d)) {
+            throw new IllegalValueException(Time.DATE_CONSTRAINTS);
+        }
+        if (!Time.isValidTime(t)) {
+            throw new IllegalValueException(Time.TIME_CONSTRAINTS);
+        }
+        if ((!Description.isValidDescription(description))) {
+            throw new IllegalValueException(Description.MESSAGE_CONSTRAINTS);
         }
         Time time = new Time(this.time);
         Description description = new Description(this.description);

@@ -235,6 +235,174 @@ image::CommitActivityDiagram.png[]
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
 // end::undoredo[]
 
+=== Task feature
+==== Description of feature
+Within every project, there are tasks to be done or milestones to be achieved within certain deadlines. The diagram below shows the class diagram of the task class and how it interacts with the model.
+
+.Class Diagram for Task
+
+image::TaskClassDiagram.png[]
+
+As shown above, each project stores multiple tasks in a list. These tasks can be stored, deleted, edited and sorted very easily.
+Here are some task related commands that can be executed by the app.
+
+. addTask - adds a task into the project model.
+. deleteTask - removes a task from the project model based on index specified by user
+. editTask - edits a task of the given index with attribute/s to edit e.g deadline/description/whether is done
+. sortTask - sorts the list of tasks based on specification given by user. (more info available in section 3.3)
+
+==== Details
+As seen in figure 9, each task consists of 3 parameters namely description, time and a boolean state to show whether the task is done/in progress.
+A typical task will look like this on the app: +
+
+image::TASK.png[]
+
+=== Meeting feature
+==== Description of feature
+Within every project, there are meetings to be held at certain time. The diagram below shows the class diagram of the task class and how it interacts with the model.
+
+.Class Diagram for Meeting
+
+image::MeetingClassDiagram.png[]
+
+As shown above, each project stores multiple meetings in a list. These meetings are automatically sorted based on the time in ascending order.
+Here are some task related commands that can be executed by the app.
+
+. addProjectMeeting - adds a meeting into the project model.
+. deleteProjectMeeting- removes a meeting from the project model based on index specified by user
+
+==== Details
+As seen in figure 10, each meeting consists of 2 parameters namely description and time to show what is the meeting about and the date and time of the meeting respectively.
+A typical task will look like this on the app: +
+
+image::ProjectMeeting.png[]
+
+
+=== Sorting feature
+==== Description of feature
+
+Sorts some lists based on specifications provided by the user.
+There are 2 lists that are able to be sorted so far. +
+
+. Sort list of tasks
+. Sort list of spending
+
+The implementation is similar for these 2 methods. It makes use of `SortingOrder`, which is
+a container class that stores the current sort order as well as methods to get and set these orders.
+`SortingOrder` can be found in the `model` package.
+Currently there are 5 different methods to sort the lists.
+
+. Alphabetical order
+. Increasing order of time
+. Whether tasks are done
+. Whether tasks are done and then by increasing order of time
+. Increasing price
+
+[NOTE]
+
+Methods 3-4 are only for sorting tasks whereas method 5 is for sort spending.
+Methods 1-2 can be used to sort both lists.
+
+==== Details
+Both commands sortTask and sortSpending take in a single integer as parameter. As mentioned in the
+note above, 1-4 are valid input for sortTask, 1, 2 and 5 are valid for sortSpending.
+
+An example command would be `sortTask 1` which sorts the list of tasks by alphabetical order.
+
+The following sequence diagram shows the process of obtaining a list with the new sorting order
+and updating the current sort order in `SortingOrder` class.
+
+.Sequence Diagram for sortTask
+image::SortTaskSequenceDiagram.png[]
+
+These are the stages shown in figure 9. Stages are similar for sort spending as well.
+
+. Parses the input to obtain the index.
+. Goes to `SortingOrder` to change the current sorting order to the one linked to the given index based on the specification shown above.
+. Obtains list of tasks from model and sorts it. List now maintains this sorting order and displays a sorted list even after adding or editing elements.
+. Display the newly sorted task list.
+
+.Activity Diagram for sortTask
+image::SortTaskActivityDiagram.png[]
+
+The diagram above shows sortTask works. There are 2 possible error messages that can occur. Firstly,
+if the user inputs an index that is not applicable to the type of items sorted. For example, `sortTask 5`
+is invalid as index 5 is linked to a price sorting mechanism which is not applicable to sorting tasks. Secondly,
+an error will be shown if the user attempts to sort the items in the same order is the current sorting order.
+For example, since the default sorting order for tasks is by increasing order of date, the command `sortTask 2`
+will be invalid if the sorting order has never been changed before. Otherwise if the input is valid,
+the sorting will occur and the newly sorted task list will be displayed.
+
+
+==== Design considerations
+
+===== Aspect: Data structure to support the sort commands
+
+
+* **Alternative 1 (current choice):** Store the data in list.
+** Pros: Easy to implement. Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
+** Cons: May have performance issues as list has to be sorted every time a new element is added or edited.
+* **Alternative 2:** Store the data in a PriorityQueue.
+** Pros: Much more efficient in terms of performance and complexity. Internal list will automatically be updated which means
+no additional sorting needed when adding or editing new elements.
+** Cons: Have to create and add all the tasks into another PriorityQueue if the sorting order were to be changed. Harder to implement.
+
+
+=== Sending Reminder feature
+==== Description of feature
+
+Sends reminder for tasks and meetings that are due in the number of days given by the user input.
+
+The basic implementation uses javax.Mail to send email to other email addresses. The Mailer class has static method sendEmail 
+which is responsible for sending all kinds of email to a given recipient(s). User's email account information is 
+stored in the Model class and subsequent queries regarding mailing will use this information that has been stored to send the email.
+Currently, only gmail server has been made available for use in sending the emails.
+
+[NOTE]
+User Email  Account Information is stored through the signIn command.
+
+==== Details
+SendReminder takes in a single integer as parameter. The integer will be the duration in days from the current times in which the meetings and tasks are due.
+
+The following sequence diagram shows the process of sending reminder to the project members.
+
+.Sequence Diagram for sendReminder
+image::SendReminderSequenceDiagram.png[]
+
+These are the stages shown in figure 9. Stages are similar for sort spending as well.
+
+. Parses the input to obtain the duration.
+. Goes to `Model` to get the the Meetings and Tasks.
+. Obtains list of tasks and meetings which are due in the duration time.
+. Goes to `Model` to get the members in the project.
+. Goes to `Model` to get the OwnerAccount information.
+. Sends email to all the members about the upcoming meetings and tasks in the project.
+. Display the success message.
+
+.Activity Diagram for sortTask
+image::SendReminderActivityDiagram.png[]
+
+The diagram above shows how sendReminder works. There are 2 possible error messages that can occur. Firstly,
+if the user inputs nothing as the duration and input cannot be empty error message is shown. Secondly,
+an error will be shown if the user non-numeric or negative or zero number as the duration of time.
+
+
+==== Design considerations
+
+===== Aspect: Data structure to support the sort commands
+
+
+* **Alternative 1:** Storing List<Person> in the Project for members.
+** Pros: Easy to implement. Do not need to look for the person object in the addressBook from the List of String of 
+members' names in the project.
+** Cons: Introduces coupling and may cause unwanted bugs due to cyclic depencdencies as Project contains Person and 
+Person contains Project.
+* **Alternative 2:** Stores members as List<String> of members names.
+** Pros: Reduces coupling and and eliminates cyclic dependencies between Project and Person object..
+** Cons: Have to hash the members object in the addressBook by names and go through the List<String> of members'
+names one by one to get the Person object of the member. Harder to implement.
+
+
 === Generate meeting timeslot
 ==== Description of Feature
 
@@ -247,13 +415,13 @@ The main logic of this feature is contained within the `TimeSlotGenerator` class
 
 `TimeSlotGenerator(members, desiredMeetingDuration, restrictedTimeRange)`
 
-* `members`: `List<TimeTable>` of members of the checked-out `Project`
+* `members`: `List<Timetable>` of members of the checked-out `Project`
 * `desiredMeetingDuration`: How long the meeting would last in hour, expressed as a positive integer
 * `restrictedTimeRange`: Sets the limit of generated `TimeRange`, e.g. restrict meeting to working hours, from MONDAY 0900 - MONDAY 1800
 
 Only the two following methods are exposed:
 
-* `TimeSlotGenerator#generate()` -- Generate timeslot suitable for *_all_* `TimeTable` supplied. Returns a list of `TimeRange`, or an empty list of `TimeRange` if no such timeslot is available.
+* `TimeSlotGenerator#generate()` -- Generate timeslot suitable for *_all_* `Timetable` supplied. Returns a list of `TimeRange`, or an empty list of `TimeRange` if no such timeslot is available.
 * `TimeSlotGenerator#generateWithMostMembers()` -- Generate timeslot where *_most_* members of the currently checked out project are available. Returns a list of `TimeRange`.
 
 ==== Details
@@ -288,7 +456,7 @@ image::GenerateSlotActivityDiagram.png[]
 
 ===== `TimeSlotGenerator#generate()`
 
-. Combine all the given `TimeTable` into a single `List<TimeRange> combined`
+. Combine all the given `Timetable` into a single `List<TimeRange> combined`
 . `combined` is then processed further by merging overlapping `TimeRange` into a single `TimeRange`. E.g. `TimeRange(MONDAY, 1000, MONDAY, 1200)` and `TimeRange(MONDAY, 1200, MONDAY,1400)` are merged together to form a single `TimeRange(MONDAY, 1000, MONDAY, 1400)`. `List<TimeRange> merged` is then passed on to the next stage.
 . `merged` is then inverted, and returns `List<TimeRange> inverted` containing all timeslots where all the members are free.
 . `inverted` is then processed to ensure that all `TimeRange` falls within `restrictedTimeRange` specified by the user, truncating all `TimeRange` that extends beyond the specified `restrictedTimeRange`, returning `List<TimeRange> truncated`.
@@ -299,7 +467,7 @@ image::GenerateSlotActivityDiagram.png[]
 . Iterates over all possible combinations of timetables in descending order of number of timetable.
 . For each possible combination, call `TimeSlotGenerator#generate()`.
 . If `TimeSlotGenerator#generate()` returns an empty list, repeat step 2 again.
-. Algorithm terminates, returning the combination of List<TimeTable> used and available timings `List<TimeRange>` wrapped in a class `TimeSlotWithMember`.
+. Algorithm terminates, returning the combination of List<Timetable> used and available timings `List<TimeRange>` wrapped in a class `TimeSlotWithMember`.
 
 ==== Design Considerations
 
@@ -318,16 +486,16 @@ We went with options 1 as there is no real difference in speed if the number of 
 ==== Description of Feature
 There are two ways to input member's timetable
 
-. Member send a formatted text file to the team leader, which would then be parsed by the system
-. Member send their NUSMods timetable URL to the team leader, and the system would fetch their timetable data using NUSMods API
+. Member send a formatted text file to the team leader, which would then be parsed by the system. The file would be a list of newline separated time ranges
+. Member send their NUSMods timetable URL to the team leader, and the system would parse the URL and fetch timetable data using NUSMods API
 
-The main logic is implemented within the `AddTimetableCommand` class.
+The main logic is implemented within the `TimetableInput` class.
 
 ==== Details
 
 Important functions in the `AddTimetableCommand`:
 
-* `AddTimetableCommand#getTimetableFromNUSMods(String url)` -- Fetch timetable data using NUSMods API
+* `TimetableInput#getTimetableFromNUSMods(String url)` -- Fetch timetable data using NUSMods API
 * `AddTimetableCommand#getTimetableFromFile(String filepath)` -- Parse file to obtain timetable data
 
 An overview of how the `AddTimetableCommand` class works, shown in figure below:
@@ -376,6 +544,91 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 
 Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: `config.json`).
 
+[[Implementation-Checkout]]
+=== Checkout
+This allows user to checkout to a project from a list of project to work on it.
+Almost every command regarding the project require the user to checkout first.
+
+How it works is the ModelManager class is holding an additional `Optional<Project>` 
+attribute and the model supports three new methods:
+
+* `setWorkingProject()` -- Sets the attribute to the argument of the method.
+* `getWorkingProject()` -- Returns the current project.
+* `isCheckedOut()` -- Checks whether the current working project is empty.
+
+A typical use of the command can be seen in the sequence diagram below.
+
+image::CheckoutSequenceDiagram.png[]
+
+[[Implementation-Change-in-UI-display]]
+=== Change in UI display
+The first step of changing UI display is to find out
+whether a change in UI is needed given a command from user.
+This is done in the CommandResult class constructor. If a command
+word matches either of the four words `list, checkout, listBudget, addProject`,
+the flag of whether a change in UI is needed will be set to true.
+
+Next, a class to represent a state of UI is needed to remember
+a history which is the `UiEvent` class.
+UiEvent is a class that represent a type of UiDisplay as an
+event. It stores the current state of the application's UI and the current working project if it exists.
+The `viewHistory` is stored in the `MainWindow` class as a stack of UiEvents
+and it also maintains a currentStatePointer. When a `back` command
+is executed, it can check back on what is the previous state.
+
+* `MainWindow#changeUiDisplay` -- Change the Ui and change the current state.
+* `MainWindow#getPreviousState` -- Pops the stack and peek to look for the previous state.
+* `MainWindow#handleBack` -- Change the Ui display to the previous state.
+
+Given below is an example of how the UI behave at each step.
+
+Step 1. The user launches the application for the first time.
+The `viewHistory` will be initialized with the initial
+`PROJECT_LIST` state, and the `currentStatePointer` pointing to
+that single address book state.
+
+image::ChangeUiDisplayState0.png[]
+
+Step 2. The user executes `checkout 1` command to checkout to preoject 1 to work on.
+During the execution of the `checkout` command, at the commandresult generation step,
+it detects that there is a need to change the Ui and the flag is made to true.
+In the `MainWindow`, since a change is needed, `MainWindow#changeUi` is called
+to change the display and set the `currentState` to be `PROJECT_OVERVIEW`.
+
+image::ChangeUiDisplayState1.png[]
+
+Step 3. The user now decide to add a budget by `addBudget b/ equipment 3000.00`.
+This command does not need a change in Ui display thus the flag is false.
+However, the method `MainWindow#changeUiDisplay` is still called but this time
+it is called to update the information in the current display and set the
+current state to be still the current state. Thus, the `currentStatePointer` does
+not move.
+
+image::ChangeUiDisplayState2.png[]
+
+[NOTE]
+If a command fails its execution, a `commandResult` wont be generated thus no change in Ui will happen.
+
+Step 4. The user now wants to have a better view of the budgets and executes
+`listBudget`. Same step follows through the checkout command.
+
+image::ChangeUiDisplayState3.png[]
+
+Step 5. The user now decides to go back to the home page and executes
+two consecutive `back` command. At the execute stage in `MainWindow`,
+it detects it is a back command and `MainWindow#handleBack` is called.
+This method will then pop the current state by `MainWindow#getPreviousState`
+and call `MainWindow#changeUiDisplay` to display the previous Ui.
+
+image::ChangeUiDisplayState4.png[]
+image::ChangeUiDisplayState5.png[]
+
+
+[NOTE]
+If the `currentStatePointer` is at `PROJECT_LIST`, then there are
+no previous UI states to go back. Under such situation, an error will be returned.
+
+
 == Documentation
 
 Refer to the guide <<Documentation#, here>>.
@@ -393,13 +646,19 @@ Refer to the guide <<DevOps#, here>>.
 
 *Target user profile*:
 
+* university students (will be expanded to working adults as well in future versions)
+* handles many different projects at once
+* unable to keep track of tasks and deadlines
+* loves visual aids such as charts and graphs to display information
+* needs a single app to store all kinds of different information
 * has a need to manage a significant number of contacts
 * prefer desktop apps over other types
 * can type fast
 * prefers typing over mouse input
 * is reasonably comfortable using CLI apps
 
-*Value proposition*: manage contacts faster than a typical mouse/GUI driven app
+*Value proposition*: One stop project management app to store and display
+different projects with user-friendly commands using a command line interface.
 
 [appendix]
 == User Stories

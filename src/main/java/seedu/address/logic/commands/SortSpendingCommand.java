@@ -6,6 +6,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.finance.Budget;
 import seedu.address.model.finance.Finance;
+import seedu.address.model.finance.Spending;
 import seedu.address.model.project.Project;
 import seedu.address.model.util.SortingOrder;
 
@@ -20,7 +21,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_NOT_CHECKED_OUT;
  */
 public class SortSpendingCommand extends Command {
     public static final String COMMAND_WORD = "sortSpending";
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts the spendings for each expense in the list of budgets according to given index.\n "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Sorts the spendings for each expense in the list of budgets according to given index.\n"
             + "1 - Sorts by alphabetical order.\n"
             + "2 - Sorts by increasing date/time.\n"
             + "5 - Sorts by increasing spending.\n"
@@ -29,6 +30,7 @@ public class SortSpendingCommand extends Command {
 
 
     public static final String MESSAGE_SORT_SPENDING_SUCCESS = "Spendings sorted by%1$s";
+    public static final String MESSAGE_SAME_INDEX = "Spending already sorted in this order! Select a different ordering.";
 
 
     public final Index index;
@@ -48,11 +50,16 @@ public class SortSpendingCommand extends Command {
             throw new CommandException(MESSAGE_NOT_CHECKED_OUT);
         }
 
+        int num = index.getOneBased();
+        if (num == SortingOrder.getSpendingCurrentIndex()) {
+            throw new CommandException(MESSAGE_SAME_INDEX);
+        }
+
         Project projectToEdit = model.getWorkingProject().get();
         List<String> members = projectToEdit.getMemberNames();
         String sortType = "";
 
-        switch (index.getOneBased()) {
+        switch (num) {
 
         case 1:
             sortType = " alphabetical order.";
@@ -75,7 +82,7 @@ public class SortSpendingCommand extends Command {
 
         List<Budget> budgetListToEdit = projectToEdit.getFinance().getBudgets();
         for (Budget budget : budgetListToEdit) {
-            Collections.sort(budget.getSpendings(), SortingOrder.getCurrentSortingOrderForSpending());
+            sortSpending(budget.getSpendings(), SortingOrder.getCurrentSortingOrderForSpending());
         }
 
         Finance finance = projectToEdit.getFinance();
@@ -87,6 +94,10 @@ public class SortSpendingCommand extends Command {
         model.setProject(projectToEdit, editedProject);
         model.updateFilteredProjectList(PREDICATE_SHOW_ALL_PROJECTS);
         return new CommandResult(String.format(MESSAGE_SORT_SPENDING_SUCCESS, sortType), COMMAND_WORD);
+    }
+
+    public void sortSpending(List<Spending> list, Comparator<Spending> spendingComparator) {
+        Collections.sort(list, spendingComparator);
     }
 
 

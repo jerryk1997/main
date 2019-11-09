@@ -66,7 +66,7 @@ public class UnassignTaskCommand extends Command {
         Performance editedPerformance = new Performance(personToEdit.getPerformance().getMeetingsAttended(), taskAssignment);
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(), personToEdit.getProfilePicture(),
-                personToEdit.getAddress(), personToEdit.getTags(), personToEdit.getTimeTable(), editedPerformance);
+                personToEdit.getAddress(), personToEdit.getTags(), personToEdit.getTimetable(), editedPerformance);
 
         editedPerson.getProjects().addAll(personToEdit.getProjects());
         model.setPerson(personToEdit, editedPerson);

@@ -11,7 +11,7 @@ import seedu.address.model.finance.Budget;
 import seedu.address.model.finance.Spending;
 
 /**
- * An UI component that displays information of a {@code Project}.
+ * An UI component that displays a pie chart for the budget of a {@code Project}.
  */
 public class BudgetPieChart extends UiPart<Region> {
 
@@ -43,9 +43,9 @@ public class BudgetPieChart extends UiPart<Region> {
                 FXCollections.observableArrayList();
         Double remaining = budget.getRemainingAmount().doubleValue();
         if (remaining < 0) {
-            pieChartData.add(new PieChart.Data("Overshot by: $", Math.abs(remaining)));
+            pieChartData.add(new PieChart.Data("Overshot by: $" + Math.abs(remaining), Math.abs(remaining)));
         } else {
-            pieChartData.add(new PieChart.Data("Remaining: $", remaining));
+            pieChartData.add(new PieChart.Data("Remaining: $" + remaining, remaining));
         }
         for (Spending spending : budget.getSpendings()) {
             pieChartData.add(new PieChart.Data(spending.getDescription() + ": $" + spending.getSpending().doubleValue(), spending.getSpending().doubleValue()));

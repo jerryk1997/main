@@ -82,7 +82,7 @@ public class AssignTaskCommand extends Command {
                 getAsStringPersons(assignedPersons)), COMMAND_WORD);
     }
 
-    private List<Person> assignTaskTo(List<Person> personsToAssign, Task taskToAssign, Project currWorkingProject) throws CommandException{
+    private List<Person> assignTaskTo(List<Person> personsToAssign, Task taskToAssign, Project currWorkingProject) throws CommandException {
         List<Person> assignedPersons = new ArrayList<>();
         String projectTitle = currWorkingProject.getTitle().title;
 
@@ -112,7 +112,7 @@ public class AssignTaskCommand extends Command {
 
             Person editedPerson = new Person(personToAssign.getName(), personToAssign.getPhone(), personToAssign.getEmail(),
                     personToAssign.getProfilePicture(), personToAssign.getAddress(),
-                    personToAssign.getTags(), personToAssign.getTimeTable(), updatedPerformance);
+                    personToAssign.getTags(), personToAssign.getTimetable(), updatedPerformance);
 
             editedPerson.getProjects().addAll(personToAssign.getProjects());
 

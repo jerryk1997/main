@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class TimeTableInput {
-    public Timetable getTabletableFromFilepath(String absoluteFilepath) throws IOException, ParseException {
+public class TimetableInput {
+    public Timetable getTimetableFromFilepath(String absoluteFilepath) throws IOException, ParseException {
         String content = new Scanner(new File(absoluteFilepath)).useDelimiter("\\Z").next();
-        return ParserUtil.parseTimeTable(content);
+        return ParserUtil.parseTimetable(content);
     }
 
     /**
      * Return retreived timetable from NUSMods
      * @param url URL of NUSMods shared timetable
-     * @return Retrieved {@code TimeTable}
+     * @return Retrieved {@code Timetable}
      * @throws IOException URL parsing error
      * @throws IllegalValueException Cannot find lesson grouping on NUSMods
      */
@@ -99,7 +99,7 @@ public class TimeTableInput {
                 });
         if (targets.size() < 1) {
             // System.out.println(String.format("Group:%s,LessonType:%s,sem:%d", group, lessonType, sem));
-            throw new IllegalValueException("No such lesson exists: " + String.format("Module:%s, Group: %s, LessonType:%s, Sem:%d", moduleCode, group, lessonType, sem));
+            throw new IllegalValueException("No such lesson exists: " + String.format("Module: %s, Group: %s, LessonType: %s, Sem: %d", moduleCode, group, lessonType, sem));
         }
 
         // Possible to have more than
