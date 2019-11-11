@@ -122,12 +122,12 @@ public class UniqueProjectList implements Iterable<Project> {
             }
         }
 
-            ListIterator<Project> toEditIter = projectsToEdit.listIterator();
-            ListIterator<Project> editedIter = editedProjects.listIterator();
+        ListIterator<Project> toEditIter = projectsToEdit.listIterator();
+        ListIterator<Project> editedIter = editedProjects.listIterator();
 
-            while (toEditIter.hasNext() && editedIter.hasNext()) {
-                setProject(toEditIter.next(), editedIter.next());
-            }
+        while (toEditIter.hasNext() && editedIter.hasNext()) {
+            setProject(toEditIter.next(), editedIter.next());
+        }
     }
 
     /**
