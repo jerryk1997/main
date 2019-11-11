@@ -120,6 +120,7 @@ public class UniqueProjectList implements Iterable<Project> {
                 editedProjects.add(updatedProject);
                 updatedProject.setListOfMeeting(project.getListOfMeeting());
             }
+        }
 
             ListIterator<Project> toEditIter = projectsToEdit.listIterator();
             ListIterator<Project> editedIter = editedProjects.listIterator();
@@ -127,7 +128,6 @@ public class UniqueProjectList implements Iterable<Project> {
             while (toEditIter.hasNext() && editedIter.hasNext()) {
                 setProject(toEditIter.next(), editedIter.next());
             }
-        }
     }
 
     /**
