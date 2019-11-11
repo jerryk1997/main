@@ -200,6 +200,7 @@ image::ProjectMeeting.png[]
 
 // end::addProjectMeeting[]
 
+// tag::memberFeature[]
 === Member feature
 ==== Description of feature
 In every project, it almost certain that there are members. Therefore we have allowed for the users to be able to
@@ -257,6 +258,8 @@ The following commands are implemented to support this feature:
 . `addFromContacts` - Adds a person currently stored in your contacts to the current working project.
 . `removeMember` - Removes a person from the current working project.
 . `addProfilePicture` - Adds a profile picture to a person in the contacts.
+
+// end::memberFeature[]
 
 === Sorting feature
 ==== Description of feature
@@ -732,6 +735,7 @@ image::ChangeUiDisplayState5.png[]
 If the `currentStatePointer` is at `PROJECT_LIST`, then there are
 no previous UI states to go back. Under such situation, an error will be returned.
 
+// tag::performanceTracking[]
 === Performance Tracking
 
 We allow users to be able to track the performance of every member in the project, by using information that the user has
@@ -815,6 +819,7 @@ and a method to retrieve the values.
 ** Cons:
 *** It is more difficult to iterate through all HashMaps to retrieve the values based on your preferred ordering.
 
+// end::performanceTracking[]
 
 == Documentation
 
