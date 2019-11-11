@@ -26,6 +26,7 @@ public class MarkAttendanceCommand extends Command {
 
     public static final String MESSAGE_MARK_ATTENDANCE_SUCCESS = "Attendance for meeting(%1$s on %2$s) is marked for %3$s";
     public static final String MESSAGE_DUPLICATE_ATTENDANCE = "Attendance already marked for %1$s";
+    public static final String MESSAGE_NO_MEMBER_SPECIFIED = "No members are specified, attendance cannot be marked.";
 
     private final List<Index> targetIndexes;
 
