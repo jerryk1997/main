@@ -12,7 +12,7 @@ ifdef::env-github[]
 :note-caption: :information_source:
 :warning-caption: :warning:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level3/tree/master
+:repoURL: https://github.com/AY1920S1-CS2103T-T17-1/main/tree/master
 
 By: `T17-1`      Since: `Oct 2019`      Licence: `MIT`
 
@@ -369,9 +369,10 @@ These are the stages shown in figure 15.
 .Activity Diagram for sendReminder
 image::SendReminderActivityDiagram.png[]
 
-The diagram above shows how `sendReminder` works. There are 2 possible error messages that can occur. Firstly,
+The diagram above shows how `sendReminder` works. There are 2 possible error messages for invalid input. Firstly,
 if the user inputs nothing as the duration and input cannot be empty error message is shown. Secondly,
-an error will be shown if the user non-numeric or negative or zero number as the duration of time.
+an error will be shown if the user non-numeric or negative or zero number as the duration of time. For a valid input,
+user will be required to checkout then signIn first before executing the command.
 
 
 ==== Design considerations
@@ -489,7 +490,7 @@ check for the correctness of the password input.
 sent by the team leaders.
 ** Cons: Expose users' password when users are trying to sign in. Users will need to change the account
 security settings to let less secure app access the account. Compromises account security.
-* **Alternative 2:** Hardcode an account in the application that is responsible for all mailing command/
+* **Alternative 2:** Hardcode an account in the application that is responsible for all mailing command.
 ** Pros: Do not expose users' password and Users do not need to change their Account security settings to
 send the emails.
 ** Cons: Members(recipient) receiving email from the users' may not know the origin of the email.
@@ -1138,15 +1139,13 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with a set of sample projects. The window size may not be optimum.
 
 . Saving window preferences
 
 .. Resize the window to an optimum size. Move the window to a different location. Close the window.
 .. Re-launch the app by double-clicking the jar file. +
    Expected: The most recent window size and location is retained.
-
-_{ more test cases ... }_
 
 === Deleting a person
 
@@ -1159,13 +1158,14 @@ _{ more test cases ... }_
    Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
-
-_{ more test cases ... }_
-
-=== Saving data
-
-. Dealing with missing/corrupted data files
-
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
-
-_{ more test cases ... }_
+   
+=== Editing a task
+  
+  .. Prerequisities: Checkout to a project using the `checkout` command. Multiple tasks in the task list.
+  .. Test case: `editTask 1 d/` +
+     Expected: First task is marked as done(cross changes to a tick).
+  .. Test case: `editTask 2 s/Do parts of the parser` +
+     Expected: The description of the second task is edited. Since d/ is not included in the input, the task is unchecked.
+  .. Test case `editTask 3 d/` +
+     Expected: No task is edited. Error details shown in the status message.
+  .. Other incorrect editTask commands to try: `editTask x` (where x is negative or larger than the list size), `editTask c/1/1/2019 1500` (Wrong time format)
