@@ -1169,3 +1169,37 @@ These instructions only provide a starting point for testers to work on; testers
   .. Test case `editTask 3 d/` +
      Expected: No task is edited. Error details shown in the status message.
   .. Other incorrect editTask commands to try: `editTask x` (where x is negative or larger than the list size), `editTask c/1/1/2019 1500` (Wrong time format)
+
+=== Adding a member from contacts
+
+.. Prerequisites: Checkout to a project using the `checkout` command. You also need to have multiple `Person`(s)
+in your contacts.
+
+.. Test case: `addFromContacts 1` +
+Expected: First person in your contacts is added your your project.
+
+.. Test case: `addFromContacts 2 3` +
+Expected: Adds both the second and third person into your project.
+
+.. Test case: `addFromContacts 2000`
+Expected: No members are added, error message is shown saying the index is invalid.
+
+.. Other incorrect addFromContacts commands to try: `addFromContacts` (this is an incorrect format since no index is specified) +
+`addFromContacts -1` (This is an invalid format since index should be positive)
+
+=== Assigning a task to members
+
+.. Prerequisites: Checkout to a project using the `checkout` command. There are one or more tasks in your project. There
+are one or more members in your project.
+
+.. Test case: `assignTask 1 1` +
+Expected: First task listed in the project is assigned to the first person listed in the project as a member.
+
+.. Test case: `assignTask 1 2 3` +
+Expected: First task listed in the project is assigned to both the second and third person listed in the project.
+
+.. Test case: `assignTask` +
+Expected: No tasks are assigned and error message for invalid format is shown.
+
+.. Other incorrect `assignTask` commands to try: `assignTask 2000 1` (this should be an incorrect task index specified) +
+`assignTask -1 2 3` (this is an incorrect format as indexes should be positive).

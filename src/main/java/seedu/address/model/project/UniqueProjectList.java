@@ -110,8 +110,9 @@ public class UniqueProjectList implements Iterable<Project> {
 
             if (memberList.contains(personToEditName)) {
                 projectsToEdit.add(project);
-                memberList.set(memberList.indexOf(personToEditName), editedPersonName);
-                List<String> updatedMemberList = memberList;
+                List<String> updatedMemberList = new ArrayList<>();
+                updatedMemberList.addAll(memberList);
+                updatedMemberList.set(memberList.indexOf(personToEditName), editedPersonName);
 
                 Project updatedProject = new Project(project.getTitle(), project.getDescription(), updatedMemberList,
                         project.getTasks(), project.getFinance(), project.getGeneratedTimetable());
